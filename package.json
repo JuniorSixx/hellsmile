@@ -1,0 +1,20 @@
+{
+  "name": "hellsmile",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "npx tailwindcss -i ./src/input.css -o ./src/output.css --watch",
+    "build:css": "npx tailwindcss -i ./src/input.css -o ./src/output.css",
+    "start": "npm run build:css && serve src"
+  },
+  "dependencies": {
+    "tailwindcss": "^3.3.5",
+    "fs-extra": "^11.1.1"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

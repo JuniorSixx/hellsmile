@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HellSmile - Software Odontológico</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+  <style>
+    /* Animações de entrada */
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes slideInUp {
+      0% { transform: translateY(30px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .feature-box {
+      background-color: #f1f1f1;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .feature-box:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-text {
+      color: #555555;
+    }
+
+    .feature-icon {
+      font-size: 4rem;
+      color: #0070ba;
+    }
+
+    .btn-animate {
+      padding: 10px 30px;
+      border-radius: 5px;
+      background-color: #0070ba;
+      color: white;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-animate:hover {
+      background-color: #005f8d;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .section-title {
+      color: #0070ba;
+    }
+
+    .primary-bg {
+      background-color: #0070ba;
+    }
+
+    .text-primary {
+      color: #0070ba;
+    }
+
+    /* Estilo dos depoimentos */
+    .testimonial-box {
+      background-color: #f9f9f9;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      width: 350px;
+      margin: 0 15px;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .testimonial-box:hover {
+      transform: translateY(-10px);
+      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .testimonial-text {
+      color: #666666;
+    }
+
+    .testimonial-author {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .testimonial-image {
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      margin-top: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Efeito da linha embaixo do menu */
+    .nav-item {
+      position: relative;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #555;
+      transition: color 0.3s ease;
+    }
+
+    .nav-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #0070ba;
+      transition: width 0.3s ease;
+    }
+
+    .nav-item:hover {
+      color: #0070ba;
+    }
+
+    .nav-item:hover::after {
+      width: 100%;
+    }
+
+    .arrow-button {
+      cursor: pointer;
+      background-color: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      margin: 0 10px;
+    }
+
+    .arrow-button:hover {
+      background-color: #2980b9;
+    }
+
+    /* Rodapé AQUIII */
+    footer {
+      background-color: #f1f1f1;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.875rem;
+      color: #333;
+      margin-top: 50px;
+    }
+
+    footer a {
+      color: #0070ba;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+  <!-- Header -->
+  <header class="bg-white shadow-md p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <img src="https://i.imgur.com/LQWn3Z2.png" alt="HellSmile Logo" class="h-40">
+      <nav>
+        <ul class="flex space-x-6">
+          <li><a href="#" class="nav-item animate__animated animate__fadeIn">Home</a></li>
+          <li><a href="#funcionalidades" class="nav-item animate__animated animate__fadeIn">Funcionalidades</a></li>
+          <li><a href="#sobre" class="nav-item animate__animated animate__fadeIn">Sobre</a></li>
+          <li><a href="#teste-gratis" class="nav-item animate__animated animate__fadeIn">Teste grátis</a></li>
+        </ul>
+      </nav>
+      <a href="login.html" class="btn-animate animate__animated animate__fadeIn">Login</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="py-24 bg-primary-bg text-center text-white">
+    <h1 class="text-5xl font-semibold mb-4 animate__animated animate__fadeIn" style="color: #0070ba;">Gestão Inteligente e Completa para Sua Clínica Odontológica</h1>
+    <p class="mt-4 text-lg animate__animated animate__fadeIn" style="color: #0070ba;">Transforme a gestão da sua clínica odontológica com o HellSmile! Escolhido por mais de 1.400 clínicas no Brasil.</p>
+    <a href="#teste-gratis" class="btn-animate mt-8 inline-block animate__animated animate__fadeIn">Teste Grátis por 7 Dias</a>
+  </section>
+
+  <!-- Funcionalidades do HellSmile -->
+  <section id="funcionalidades" class="py-16 bg-gray-50">
+    <div class="container mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-8 section-title animate__animated animate__slideInUp">Funcionalidades do HellSmile</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="feature-box animate__animated animate__fadeInUp">
+          <div class="feature-icon text-primary">📅</div>
+          <h3 class="text-xl font-semibold mt-4">Agendamento Online</h3>
+          <p class="feature-text mt-2">Aumente seu faturamento com agendamentos online. Fácil, rápido e eficiente!</p>
+        </div>
+
+        <div class="feature-box animate__animated animate__fadeInUp">
+          <div class="feature-icon text-primary">💬</div>
+          <h3 class="text-xl font-semibold mt-4">WhatsApp Automático</h3>
+          <p class="feature-text mt-2">Envio automático de confirmações via WhatsApp, garantindo menos faltas.</p>
+        </div>
+
+        <div class="feature-box animate__animated animate__fadeInUp">
+          <div class="feature-icon text-primary">💰</div>
+          <h3 class="text-xl font-semibold mt-4">Financeiro Completo</h3>
+          <p class="feature-text mt-2">Gerencie todas as finanças da sua clínica de forma simples e intuitiva.</p>
+        </div>
+
+        <div class="feature-box animate__animated animate__fadeInUp">
+          <div class="feature-icon text-primary">🦷</div>
+          <h3 class="text-xl font-semibold mt-4">Odontograma</h3>
+          <p class="feature-text mt-2">Crie e visualize o odontograma do paciente diretamente no sistema.</p>
+        </div>
+
+        <div class="feature-box animate__animated animate__fadeInUp">
+          <div class="feature-icon text-primary">📸</div>
+          <h3 class="text-xl font-semibold mt-4">Anexo de Fotos</h3>
+          <p class="feature-text mt-2">Anexe fotos e exames diretamente ao prontuário digital do paciente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Depoimentos -->
+ <!-- Depoimentos CLIENTES -->
+<section id="depoimentos" class="py-16 bg-gray-50">
+  <div class="container mx-auto text-center">
+    <h2 class="text-3xl font-bold mb-8 section-title animate__animated animate__slideInUp">O que nossos clientes dizem</h2>
+    <div class="flex justify-center space-x-6" id="testimonial-container">
+      <!-- Depoimentos serão injetados aqui -->
+    </div>
+    <div class="flex justify-center mt-6">
+      <button class="arrow-button text-xl px-6" id="prev-button">←</button>
+      <button class="arrow-button text-xl px-6" id="next-button">→</button>
+    </div>
+  </div>
+</section>
+
+<script>
+  const testimonials = [
+    {
+      text: '"Com o HellSmile, a gestão da nossa clínica nunca foi tão fácil. As funcionalidades são incríveis e super simples de usar!"',
+      author: 'Dra. Isadora Martins',
+      image: 'https://i.imgur.com/T5nZ7pa.jpeg'
+    },
+    {
+      text: '"Mudou completamente a forma como atendemos nossos pacientes. Todos os recursos são ótimos, principalmente a parte financeira!"',
+      author: 'Dra. Ana Laura',
+      image: 'https://i.imgur.com/9HnZsHE.png'
+    },
+    {
+      text: '"Adoramos a funcionalidade de agendamento online, que facilitou a gestão dos horários e aumentou a eficiência do nosso atendimento!"',
+      author: 'Dr. Tayla Emanuelle',
+      image: 'https://i.imgur.com/BcPl72e.png'
+    },
+    {
+      text: '"Com o sistema financeiro integrado, conseguimos organizar melhor nossas finanças e melhorar o fluxo de caixa da clínica."',
+      author: 'Dr. Mauthos Sepini',
+      image: 'https://i.imgur.com/rfj3ZIH.png'
+    },
+    {
+      text: '"A interface do HellSmile é intuitiva, tornando a experiência do usuário muito agradável e sem complicações."',
+      author: 'Dr. João Pedro',
+      image: 'https://i.imgur.com/gORefRa.png'
+    },
+    {
+      text: '"Excelente atendimento e suporte! Sempre prontos para resolver qualquer problema que surge na nossa clínica."',
+      author: 'Dr. Tulio dos Anjos',
+      image: 'https://i.imgur.com/Ug6p3FP.png'
+    }
+  ];
+
+  let currentIndex = 0;
+  const testimonialsPerPage = 2;
+  const totalPages = Math.ceil(testimonials.length / testimonialsPerPage);
+  
+  const testimonialContainer = document.getElementById("testimonial-container");
+  const testimonialCounter = document.getElementById("testimonial-counter");
+  
+  function renderTestimonials() {
+    testimonialContainer.innerHTML = '';
+    const start = currentIndex * testimonialsPerPage;
+    const end = start + testimonialsPerPage;
+    const currentTestimonials = testimonials.slice(start, end);
+    
+    currentTestimonials.forEach(testimonial => {
+      const testimonialBox = document.createElement('div');
+      testimonialBox.classList.add('testimonial-box', 'p-8');
+      
+      testimonialBox.innerHTML = `
+        <p class="testimonial-text mb-4">${testimonial.text}</p>
+        <p class="testimonial-author">${testimonial.author}</p>
+        <img src="${testimonial.image}" alt="Foto do depoente" class="testimonial-image mt-4">
+      `;
+      
+      testimonialContainer.appendChild(testimonialBox);
+    });
+    
+    testimonialCounter.textContent = `${currentIndex + 1} / ${totalPages}`;
+  }
+  
+  document.getElementById("prev-button").addEventListener("click", () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+      renderTestimonials();
+    }
+  });
+
+  document.getElementById("next-button").addEventListener("click", () => {
+    if (currentIndex < totalPages - 1) {
+      currentIndex++;
+      renderTestimonials();
+    }
+  });
+
+  renderTestimonials();
+</script>
+
+
+  <!-- Sobre -->
+  <section id="sobre" class="py-16 bg-white">
+    <div class="container mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-8 section-title animate__animated animate__slideInUp">Sobre o HellSmile</h2>
+      <p class="text-lg text-gray-700 mb-4">O HellSmile é um software completo de gestão para clínicas odontológicas. Desenvolvido para simplificar a rotina administrativa, o sistema conta com recursos inovadores para otimizar o atendimento e a organização da sua clínica.</p>
+    </div>
+  </section>
+
+  <!-- Seção de Teste Grátis -->
+<section id="teste-gratis" class="py-16 bg-white">
+  <div class="max-w-md mx-auto px-4">
+    <div class="bg-white rounded-xl shadow-lg p-8">
+      <h2 class="text-3xl font-bold text-center text-primary mb-4">Teste Grátis do HellSmile</h2>
+      <p class="text-gray-600 text-center mb-8">Experimente nossa solução agora mesmo, sem compromisso!</p>
+
+      <form id="teste-gratis-form" class="space-y-6">
+        <div>
+          <label for="nome" class="block text-sm font-medium text-gray-700 mb-2">Nome Completo:</label>
+          <input type="text" name="nome"
+                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                 placeholder="Seu nome completo" required>
+        </div>
+        
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email:</label>
+          <input type="email" name="email"
+                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                 placeholder="Seu melhor email" required>
+        </div>
+        
+        <div>
+          <label for="telefone" class="block text-sm font-medium text-gray-700 mb-2">Telefone:</label>
+          <input type="tel" name="telefone"
+                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                 placeholder="(XX) XXXXX-XXXX"
+                 pattern="[0-9]{11}"
+                 maxlength="11"
+                 title="Digite um número de telefone válido com 11 dígitos"
+                 required>
+        </div>
+       
+        <input type="hidden" name="_next" value="obrigado.html">
+        <input type="hidden" name="_subject" value="Novo pedido de teste grátis do HellSmile!">
+        <input type="hidden" name="_captcha" value="true">
+        <input type="hidden" name="_template" value="table">
+        <input type="text" name="_honey" style="display:none">
+        
+        <button type="submit" id="submit-btn"
+                class="w-full bg-blue-600 text-white py-3 px-6 rounded-xl hover:bg-blue-700
+                       transition-all duration-300 flex items-center justify-center font-semibold">
+         Solicitar Teste Grátis
+        </button>
+      </form>
+      <div id="form-message" class="mt-4 text-center hidden"></div>
+    </div>
+  </div>
+</section>
+
+<script type="module">
+  import fetchWithRetry from './utils/fetchWithRetry.js';
+
+  const form = document.getElementById('teste-gratis-form');
+  const submitBtn = document.getElementById('submit-btn');
+  const formMessage = document.getElementById('form-message');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="animate-spin">⌛</span> Enviando...';
+    formMessage.className = 'mt-4 text-center';
+    formMessage.classList.remove('hidden');
+    formMessage.innerHTML = 'Processando sua solicitação...';
+    
+    const formData = {
+      nome: e.target.nome.value.trim(),
+      email: e.target.email.value.trim(),
+      telefone: e.target.telefone.value.replace(/\D/g, '')
+    };
+
+    if (!formData.nome || !formData.email || !formData.telefone) {
+      formMessage.innerHTML = 'Por favor, preencha todos os campos corretamente.';
+      return;
+    }
+
+    // Store form data in localStorage as backup
+    localStorage.setItem('lastFormSubmission', JSON.stringify(formData));
+    
+    try {
+      const data = await fetchWithRetry('http://localhost:3000/api/teste-gratis', {
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      // Clear backup data on success
+      localStorage.removeItem('lastFormSubmission');
+      
+      window.location.href = 'obrigado.html';
+    } catch (error) {
+      console.error('Error details:', error);
+      window.location.href = 'obrigado.html'; // Redirect anyway for portfolio purposes
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Solicitar Teste Grátis';
+    }
+  });
+
+  // Function to retry submission
+  function retrySubmission() {
+    const savedData = localStorage.getItem('lastFormSubmission');
+    if (savedData) {
+      const formData = JSON.parse(savedData);
+      Object.entries(formData).forEach(([key, value]) => {
+        form.elements[key].value = value;
+      });
+      form.dispatchEvent(new Event('submit'));
+    }
+  }
+</script>
+
+
+ <!-- Footer rodape  -->
+<footer>
+  <p>© 2025 HellSmile - Todos os direitos reservados. 
+    <a href="politica-de-privacidade.html">Política de Privacidade</a> | 
+    <a href="termos-de-uso.html">Termos de Uso</a>
+  </p>
+</footer>
+
+</body>
+</html>

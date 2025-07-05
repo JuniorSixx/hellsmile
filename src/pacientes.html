@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pacientes | Hellsmile</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="output.css" />
+  <style>
+    .patient-card {
+      @apply bg-white p-6 rounded-xl shadow-lg transition-all duration-300;
+    }
+
+    .patient-card:hover {
+      @apply transform -translate-y-2 shadow-xl;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <div class="flex min-h-screen">
+    <aside class="sidebar">
+      <nav class="flex flex-col space-y-4">
+        <a href="dashboard.html" class="nav-link">
+          🏠 Dashboard
+        </a>
+        <a href="pacientes.html" class="nav-link font-bold underline">
+          👥 Pacientes
+        </a>
+        <a href="agenda.html" class="nav-link">
+          📅 Agenda
+        </a>
+        <a href="prontuarios.html" class="nav-link">
+          📄 Prontuários
+        </a>
+        <a href="odontograma.html" class="nav-link">
+          🦷 Odontograma
+        </a>
+        <a href="financeiro.html" class="nav-link">
+          💰 Financeiro
+        </a>
+        <a href="configuracoes.html" class="nav-link">
+          ⚙️ Configurações
+        </a>
+        <div class="h-4"></div>
+        <a href="index.html" class="nav-link">
+          🚪 Sair
+        </a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 p-8">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">Pacientes</h1>
+        <a href="cadastro-paciente.html" class="bg-primary text-white px-4 py-2 rounded-xl shadow hover:brightness-110">
+          + Novo Paciente
+        </a>
+      </div>
+
+      <div class="flex gap-4 mb-6">
+        <input type="text" 
+               placeholder="Buscar pacientes..." 
+               class="flex-1 px-4 py-2 border border-gray-300 rounded-xl"
+               id="searchInput">
+        
+        <select class="px-4 py-2 border border-gray-300 rounded-xl">
+          <option value="">Todos os status</option>
+          <option value="ativo">Ativos</option>
+          <option value="inativo">Inativos</option>
+        </select>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white rounded-xl shadow text-sm">
+          <tbody id="tabela-pacientes" class="divide-y divide-gray-200">
+            <!-- Patients will be inserted here via JS -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div id="pagination-controls" class="mt-6 flex justify-center items-center gap-2"></div>
+    </main>
+  </div>
+
+  <script>
+    const tabela = document.getElementById('tabela-pacientes');
+    const searchInput = document.getElementById('searchInput');
+    const ITEMS_PER_PAGE = 5;
+    let currentPage = 1;
+    const pacientes = JSON.parse(localStorage.getItem('pacientes')) || [];
+    let filteredPacientes = [...pacientes];
+
+    if (!localStorage.getItem('pacientes')) {
+      const pacientesIniciais = [
+        {
+          id: '1',
+          nome: "Naruto Uzumaki",
+          email: "naruto@konoha.com",
+          telefone: "(11) 99999-1234",
+          endereco: "Vila da Folha, 123",
+          prontuario: "Paciente hiperativo, necessita de cuidados especiais",
+          dataCadastro: new Date().toISOString(),
+          status: "Ativo"
+        },
+        {
+          id: '2',
+          nome: "Sakura Haruno",
+          email: "sakura@konoha.com",
+          telefone: "(11) 99999-5678",
+          endereco: "Vila da Folha, 456",
+          prontuario: "Força sobre-humana, cuidado com equipamentos",
+          dataCadastro: new Date().toISOString(),
+          status: "Ativo"
+        },
+        {
+          id: '3',
+          nome: "Sasuke Uchiha",
+          email: "sasuke@konoha.com",
+          telefone: "(11) 99999-9012",
+          endereco: "Vila da Folha, 789",
+          prontuario: "Sharingan ativo durante procedimentos",
+          dataCadastro: new Date().toISOString(),
+          status: "Ativo"
+        },
+        {
+          id: '4',
+          nome: "Monkey D. Luffy",
+          email: "luffy@onepiece.com",
+          telefone: "(11) 99999-3456",
+          endereco: "Grand Line, 123",
+          prontuario: "Dentes elásticos, necessita técnica especial",
+          dataCadastro: new Date().toISOString(),
+          status: "Ativo"
+        }
+      ];
+      localStorage.setItem('pacientes', JSON.stringify(pacientesIniciais));
+    }
+
+    searchInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase();
+      filteredPacientes = pacientes.filter(paciente => 
+        paciente.nome.toLowerCase().includes(searchTerm) ||
+        paciente.email.toLowerCase().includes(searchTerm) ||
+        paciente.telefone.includes(searchTerm)
+      );
+      currentPage = 1;
+      renderPacientes();
+      updatePagination();
+    });
+
+    function renderPacientes() {
+      const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+      const endIndex = startIndex + ITEMS_PER_PAGE;
+      const paginatedPacientes = filteredPacientes.slice(startIndex, endIndex);
+      
+      tabela.innerHTML = '';
+      paginatedPacientes.forEach((paciente, index) => {
+        const globalIndex = startIndex + index;
+        const tr = document.createElement('tr');
+        tr.classList.add('hover:bg-gray-50');
+        const dataFormatada = new Date(paciente.dataCadastro).toLocaleDateString('pt-BR');
+        tr.innerHTML = `
+          <td class="p-4">${paciente.nome}</td>
+          <td class="p-4">${paciente.telefone}</td>
+          <td class="p-4">${paciente.email}</td>
+          <td class="p-4">${dataFormatada}</td>
+          <td class="p-4">${paciente.status || 'Ativo'}</td>
+          <td class="p-4 space-x-2">
+            <button onclick="verPaciente(${globalIndex})" class="text-blue-600 hover:underline">Ver</button>
+            <button onclick="editarPaciente(${globalIndex})" class="text-green-600 hover:underline">Editar</button>
+            <button onclick="excluirPaciente(${globalIndex})" class="text-red-600 hover:underline">Excluir</button>
+          </td>
+        `;
+        tabela.appendChild(tr);
+      });
+    }
+
+    function updatePagination() {
+      const totalPages = Math.ceil(filteredPacientes.length / ITEMS_PER_PAGE);
+      const paginationControls = document.getElementById('pagination-controls');
+      paginationControls.innerHTML = '';
+
+      const prevButton = createPaginationButton('←', currentPage > 1, () => {
+        currentPage--;
+        renderPacientes();
+        updatePagination();
+      });
+      paginationControls.appendChild(prevButton);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const pageButton = createPaginationButton(i, true, () => {
+          currentPage = i;
+          renderPacientes();
+          updatePagination();
+        }, i === currentPage);
+        paginationControls.appendChild(pageButton);
+      }
+
+      const nextButton = createPaginationButton('→', currentPage < totalPages, () => {
+        currentPage++;
+        renderPacientes();
+        updatePagination();
+      });
+      paginationControls.appendChild(nextButton);
+    }
+
+    function createPaginationButton(text, enabled, onClick, isActive = false) {
+      const button = document.createElement('button');
+      button.textContent = text;
+      button.className = `px-4 py-2 border rounded-xl ${
+        isActive ? 'bg-primary text-white' : 
+        enabled ? 'hover:bg-gray-100' : 'opacity-50 cursor-not-allowed'
+      }`;
+      if (enabled) button.onclick = onClick;
+      return button;
+    }
+
+    function verPaciente(index) {
+      const paciente = pacientes[index];
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center';
+      modal.innerHTML = `
+        <div class="bg-white p-6 rounded-xl max-w-lg w-full">
+          <h2 class="text-2xl font-bold mb-4">Detalhes do Paciente</h2>
+          <p><strong>Nome:</strong> ${paciente.nome}</p>
+          <p><strong>Email:</strong> ${paciente.email}</p>
+          <p><strong>Telefone:</strong> ${paciente.telefone}</p>
+          <p><strong>Endereço:</strong> ${paciente.endereco}</p>
+          <p><strong>Prontuário:</strong> ${paciente.prontuario || 'Nenhum'}</p>
+          <p><strong>Data de Cadastro:</strong> ${new Date(paciente.dataCadastro).toLocaleDateString('pt-BR')}</p>
+          <button onclick="this.closest('.fixed').remove()" 
+                  class="mt-4 bg-gray-200 px-4 py-2 rounded-lg">
+            Fechar
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    function editarPaciente(index) {
+      const paciente = pacientes[index];
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center';
+      modal.innerHTML = `
+        <div class="bg-white p-6 rounded-xl max-w-lg w-full">
+          <h2 class="text-2xl font-bold mb-4">Editar Paciente</h2>
+          <form id="editForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Nome</label>
+              <input type="text" value="${paciente.nome}" id="editNome" 
+                     class="mt-1 block w-full px-4 py-2 border rounded-lg">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Email</label>
+              <input type="email" value="${paciente.email}" id="editEmail"
+                     class="mt-1 block w-full px-4 py-2 border rounded-lg">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Telefone</label>
+              <input type="tel" value="${paciente.telefone}" id="editTelefone"
+                     class="mt-1 block w-full px-4 py-2 border rounded-lg">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Prontuário</label>
+              <textarea id="editProntuario" class="mt-1 block w-full px-4 py-2 border rounded-lg">${paciente.prontuario || ''}</textarea>
+            </div>
+            <div class="flex justify-end space-x-3">
+              <button type="button" onclick="this.closest('.fixed').remove()"
+                      class="px-4 py-2 border rounded-lg hover:bg-gray-50">
+                Cancelar
+              </button>
+              <button type="button" onclick="salvarEdicao(${index})"
+                      class="px-4 py-2 bg-primary text-white rounded-lg hover:brightness-110">
+                Salvar
+              </button>
+            </div>
+          </form>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    function salvarEdicao(index) {
+      pacientes[index] = {
+        ...pacientes[index],
+        nome: document.getElementById('editNome').value,
+        email: document.getElementById('editEmail').value,
+        telefone: document.getElementById('editTelefone').value,
+        prontuario: document.getElementById('editProntuario').value
+      };
+      localStorage.setItem('pacientes', JSON.stringify(pacientes));
+      document.querySelector('.fixed').remove();
+      renderPacientes();
+    }
+
+    function excluirPaciente(index) {
+      const confirmDelete = confirm('Tem certeza que deseja excluir este paciente?');
+      if (confirmDelete) {
+        pacientes.splice(index, 1);
+        localStorage.setItem('pacientes', JSON.stringify(pacientes));
+        filteredPacientes = [...pacientes];
+        renderPacientes();
+        updatePagination();
+        
+        const alert = document.createElement('div');
+        alert.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg';
+        alert.textContent = 'Paciente excluído com sucesso!';
+        document.body.appendChild(alert);
+        setTimeout(() => alert.remove(), 3000);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderPacientes();
+      updatePagination();
+    });
+  </script>
+
+</body>
+</html>

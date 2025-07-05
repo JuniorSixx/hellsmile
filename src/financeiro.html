@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Financeiro | HellSmile</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="output.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <div class="flex min-h-screen">
+        <aside class="sidebar fixed">
+            <nav class="flex flex-col space-y-4">
+                <a href="dashboard.html" class="nav-link">🏠 Dashboard</a>
+                <a href="pacientes.html" class="nav-link">👥 Pacientes</a>
+                <a href="agenda.html" class="nav-link">📅 Agenda</a>
+                <a href="prontuarios.html" class="nav-link">📄 Prontuários</a>
+                <a href="odontograma.html" class="nav-link">🦷 Odontograma</a>
+                <a href="financeiro.html" class="nav-link font-bold underline">💰 Financeiro</a>
+                <a href="configuracoes.html" class="nav-link">⚙️ Configurações</a>
+                <div class="h-4"></div>
+                <a href="index.html" class="nav-link">🚪 Sair</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <h1 class="text-3xl font-bold mb-6">Gestão Financeira</h1>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg cursor-pointer" onclick="editarValor('receitas')">
+                    <h3 class="text-lg font-semibold mb-2">Receitas do Mês</h3>
+                    <p class="text-2xl text-green-600" id="valor-receitas">R$ 15,000.00</p>
+                    <small class="text-gray-500" id="ultima-edicao-receitas"></small>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg cursor-pointer" onclick="editarValor('despesas')">
+                    <h3 class="text-lg font-semibold mb-2">Despesas do Mês</h3>
+                    <p class="text-2xl text-red-600" id="valor-despesas">R$ 5,000.00</p>
+                    <small class="text-gray-500" id="ultima-edicao-despesas"></small>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-lg font-semibold mb-2">Saldo</h3>
+                    <p class="text-2xl text-blue-600" id="valor-saldo">R$ 10,000.00</p>
+                    
+                    <div class="mt-4">
+                        <canvas id="evolucao-saldo" 
+                                width="300" 
+                                height="200">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex space-x-4">
+                    <button onclick="novaTransacao('receita')" class="bg-green-600 text-white px-4 py-2 rounded-xl hover:brightness-110">
+                        + Nova Receita
+                    </button>
+                    <button onclick="novaTransacao('despesa')" class="bg-red-600 text-white px-4 py-2 rounded-xl hover:brightness-110">
+                        + Nova Despesa
+                    </button>
+                </div>
+                <div class="flex space-x-4">
+                    <input type="month" class="px-4 py-2 border rounded-xl">
+                    <button class="bg-primary text-white px-4 py-2 rounded-xl hover:brightness-110">
+                        Filtrar
+                    </button>
+                    <select id="categoria-filter" class="px-4 py-2 border rounded-xl">
+                        <option value="">Todas as categorias</option>
+                        <option value="Limpeza">Limpeza (R$ 150,00)</option>
+                        <option value="Aplicação de Flúor">Aplicação de Flúor (R$ 80,00)</option>
+                        <option value="Selantes">Selantes (R$ 100,00 por dente)</option>
+                        <option value="Profilaxia">Profilaxia (R$ 120,00)</option>
+                        <option value="Restauração">Restauração em Resina (R$ 200,00)</option>
+                        <option value="Coroa">Coroa em Porcelana (R$ 1.200,00)</option>
+                        <option value="Faceta">Faceta em Porcelana (R$ 1.500,00)</option>
+                        <option value="Inlay/Onlay">Inlay/Onlay (R$ 800,00)</option>
+                        <option value="Extração">Extração Simples (R$ 250,00)</option>
+                        <option value="Implante">Implante Dentário (R$ 3.000,00)</option>
+                        <option value="Enxerto">Enxerto Ósseo (R$ 1.500,00)</option>
+                        <option value="Cirurgia Periodontal">Cirurgia Periodontal (R$ 800,00)</option>
+                        <option value="Aparelho Fixo">Aparelho Fixo (R$ 1.200,00)</option>
+                        <option value="Alinhador">Alinhador Invisível (R$ 6.000,00)</option>
+                        <option value="Manutenção">Manutenção Ortodôntica (R$ 150,00)</option>
+                        <option value="Contenção">Contenção (R$ 300,00)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <table class="min-w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Descrição</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Categoria</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Valor</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200" id="transacoes-table">
+                        <!-- Transações serão inseridas aqui via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+        <div class="bg-white p-6 rounded-xl max-w-md w-full">
+            <h2 class="text-2xl font-bold mb-4">Nova Transação</h2>
+            <form id="transacao-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Tipo</label>
+                    <select id="tipo" class="mt-1 block w-full px-4 py-2 border rounded-lg">
+                        <option value="receita">Receita</option>
+                        <option value="despesa">Despesa</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Descrição</label>
+                    <input type="text" id="descricao" class="mt-1 block w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Categoria</label>
+                    <select id="categoria" class="mt-1 block w-full px-4 py-2 border rounded-lg">
+                        <option value="Limpeza">Limpeza (R$ 150,00)</option>
+                        <option value="Aplicação de Flúor">Aplicação de Flúor (R$ 80,00)</option>
+                        <option value="Selantes">Selantes (R$ 100,00 por dente)</option>
+                        <option value="Profilaxia">Profilaxia (R$ 120,00)</option>
+                        <option value="Restauração">Restauração em Resina (R$ 200,00)</option>
+                        <option value="Coroa">Coroa em Porcelana (R$ 1.200,00)</option>
+                        <option value="Faceta">Faceta em Porcelana (R$ 1.500,00)</option>
+                        <option value="Inlay/Onlay">Inlay/Onlay (R$ 800,00)</option>
+                        <option value="Extração">Extração Simples (R$ 250,00)</option>
+                        <option value="Implante">Implante Dentário (R$ 3.000,00)</option>
+                        <option value="Enxerto">Enxerto Ósseo (R$ 1.500,00)</option>
+                        <option value="Cirurgia Periodontal">Cirurgia Periodontal (R$ 800,00)</option>
+                        <option value="Aparelho Fixo">Aparelho Fixo (R$ 1.200,00)</option>
+                        <option value="Alinhador">Alinhador Invisível (R$ 6.000,00)</option>
+                        <option value="Manutenção">Manutenção Ortodôntica (R$ 150,00)</option>
+                        <option value="Contenção">Contenção (R$ 300,00)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Valor</label>
+                    <input type="number" id="valor" step="0.01" class="mt-1 block w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Data</label>
+                    <input type="date" id="data" class="mt-1 block w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal()" 
+                            class="px-4 py-2 border rounded-lg hover:bg-gray-50">
+                        Cancelar
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 bg-primary text-white rounded-lg hover:brightness-110">
+                        Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let transacoes = JSON.parse(localStorage.getItem('transacoes')) || [
+            {
+                id: 1,
+                tipo: 'receita',
+                descricao: 'Consulta Dr. João',
+                categoria: 'Consultas',
+                valor: 250.00,
+                data: '2024-03-15',
+                status: 'Pago'
+            },
+            {
+                id: 2,
+                tipo: 'despesa',
+                descricao: 'Material de Limpeza',
+                categoria: 'Insumos',
+                valor: 150.00,
+                data: '2024-03-14',
+                status: 'Pago'
+            }
+        ];
+
+        function renderizarTransacoes() {
+            const tbody = document.getElementById('transacoes-table');
+            tbody.innerHTML = '';
+            
+            transacoes.forEach(transacao => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-6 py-4">${new Date(transacao.data).toLocaleDateString()}</td>
+                    <td class="px-6 py-4">${transacao.descricao}</td>
+                    <td class="px-6 py-4">${transacao.categoria}</td>
+                    <td class="px-6 py-4 ${transacao.tipo === 'receita' ? 'text-green-600' : 'text-red-600'}">
+                        R$ ${transacao.valor.toFixed(2)}
+                    </td>
+                    <td class="px-6 py-4">${transacao.status}</td>
+                    <td class="px-6 py-4">
+                        <button onclick="editarTransacao(${transacao.id})" class="text-blue-600 hover:underline mr-3">
+                            Editar
+                        </button>
+                        <button onclick="excluirTransacao(${transacao.id})" class="text-red-600 hover:underline">
+                            Excluir
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            atualizarTotais();
+        }
+
+        function novaTransacao(tipo) {
+            document.getElementById('tipo').value = tipo;
+            document.getElementById('modal').classList.remove('hidden');
+            document.getElementById('modal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+            document.getElementById('modal').classList.remove('flex');
+        }
+
+        const handleSubmit = function(e) {
+            e.preventDefault();
+            
+            const novaTransacao = {
+                id: Date.now(),
+                tipo: document.getElementById('tipo').value,
+                descricao: document.getElementById('descricao').value,
+                categoria: document.getElementById('categoria').value,
+                valor: parseFloat(document.getElementById('valor').value),
+                data: document.getElementById('data').value,
+                status: 'Pago'
+            };
+
+            transacoes.push(novaTransacao);
+            localStorage.setItem('transacoes', JSON.stringify(transacoes));
+            
+            renderizarTransacoes();
+            closeModal();
+            this.reset();
+        };
+
+        document.getElementById('transacao-form').addEventListener('submit', handleSubmit);
+
+        function editarTransacao(id) {
+            const transacao = transacoes.find(t => t.id === id);
+            if (!transacao) return;
+
+            document.getElementById('tipo').value = transacao.tipo;
+            document.getElementById('descricao').value = transacao.descricao;
+            document.getElementById('categoria').value = transacao.categoria;
+            document.getElementById('valor').value = transacao.valor;
+            document.getElementById('data').value = transacao.data;
+
+            const modal = document.getElementById('modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            const form = document.getElementById('transacao-form');
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                
+                transacao.tipo = document.getElementById('tipo').value;
+                transacao.descricao = document.getElementById('descricao').value;
+                transacao.categoria = document.getElementById('categoria').value;
+                transacao.valor = parseFloat(document.getElementById('valor').value);
+                transacao.data = document.getElementById('data').value;
+
+                localStorage.setItem('transacoes', JSON.stringify(transacoes));
+                renderizarTransacoes();
+                closeModal();
+                
+                form.onsubmit = handleSubmit;
+            };
+        }
+
+        function excluirTransacao(id) {
+            if (confirm('Tem certeza que deseja excluir esta transação?')) {
+                transacoes = transacoes.filter(t => t.id !== id);
+                localStorage.setItem('transacoes', JSON.stringify(transacoes));
+                renderizarTransacoes();
+                atualizarTotais();
+            }
+        }
+
+        function editarValor(tipo) {
+            const hoje = new Date();
+            const ultimaEdicao = new Date(localStorage.getItem(`ultima_edicao_${tipo}`) || 0);
+            
+            if (ultimaEdicao.getMonth() === hoje.getMonth() && 
+                ultimaEdicao.getFullYear() === hoje.getFullYear()) {
+                alert('Este valor já foi editado este mês. Nova edição disponível no próximo mês.');
+                return;
+            }
+
+            const valor = prompt('Digite o novo valor:');
+            if (valor && !isNaN(valor)) {
+                const valorNumerico = parseFloat(valor);
+                document.getElementById(`valor-${tipo}`).textContent = 
+                    `R$ ${valorNumerico.toFixed(2)}`;
+                
+                localStorage.setItem(`valor_${tipo}`, valorNumerico);
+                localStorage.setItem(`ultima_edicao_${tipo}`, new Date().toISOString());
+                
+                atualizarDataUltimaEdicao(tipo);
+                atualizarTotais();
+            }
+        }
+
+        function atualizarDataUltimaEdicao(tipo) {
+            const ultimaEdicao = new Date(localStorage.getItem(`ultima_edicao_${tipo}`));
+            const elemento = document.getElementById(`ultima-edicao-${tipo}`);
+            elemento.textContent = `Última edição: ${ultimaEdicao.toLocaleDateString()}`;
+        }
+
+        function atualizarTotais() {
+            const receitas = transacoes
+                .filter(t => t.tipo === 'receita')
+                .reduce((total, t) => total + t.valor, 0);
+            
+            const despesas = transacoes
+                .filter(t => t.tipo === 'despesa')
+                .reduce((total, t) => total + t.valor, 0);
+            
+            const saldo = receitas - despesas;
+
+            document.getElementById('valor-receitas').textContent = `R$ ${receitas.toFixed(2)}`;
+            document.getElementById('valor-despesas').textContent = `R$ ${despesas.toFixed(2)}`;
+            document.getElementById('valor-saldo').textContent = `R$ ${saldo.toFixed(2)}`;
+        }
+
+        const ctx = document.getElementById('evolucao-saldo').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                datasets: [{
+                    label: 'Evolução do Saldo',
+                    data: [10000, 12000, 15000, 13000, 16000, 20000],
+                    borderColor: '#0070ba',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            ['receitas', 'despesas'].forEach(tipo => {
+                const valorSalvo = localStorage.getItem(`valor_${tipo}`);
+                if (valorSalvo) {
+                    document.getElementById(`valor-${tipo}`).textContent = 
+                        `R$ ${parseFloat(valorSalvo).toFixed(2)}`;
+                }
+                atualizarDataUltimaEdicao(tipo);
+            });
+            atualizarTotais();
+        });
+    </script>
+</body>
+</html>

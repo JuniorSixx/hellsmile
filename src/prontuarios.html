@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prontuários | Hellsmile</title>
+  <link rel="stylesheet" href="output.css" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <div class="flex min-h-screen">
+    <aside class="sidebar">
+      <nav class="flex flex-col space-y-4">
+        <a href="dashboard.html" class="nav-link">
+          🏠 Dashboard
+        </a>
+        <a href="pacientes.html" class="nav-link">
+          👥 Pacientes
+        </a>
+        <a href="agenda.html" class="nav-link">
+          📅 Agenda
+        </a>
+        <a href="prontuarios.html" class="nav-link font-bold underline">
+          📄 Prontuários
+        </a>
+        <a href="odontograma.html" class="nav-link">
+          🦷 Odontograma
+        </a>
+        <a href="financeiro.html" class="nav-link">
+          💰 Financeiro
+        </a>
+        <a href="configuracoes.html" class="nav-link">
+          ⚙️ Configurações
+        </a>
+        <div class="h-4"></div>
+        <a href="index.html" class="nav-link">
+          🚪 Sair
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <h1 class="text-3xl font-bold mb-6">Prontuários dos Pacientes</h1>
+
+      <div class="mb-6">
+        <a href="novo-prontuario.html" class="bg-primary text-white px-4 py-2 rounded-xl shadow hover:brightness-110">
+          + Novo Prontuário
+        </a>
+      </div>
+
+      <div class="mb-6">
+        <label for="categoria-filter" class="mr-2">Filtrar por categoria:</label>
+        <select id="categoria-filter" class="px-4 py-2 border border-gray-300 rounded-xl">
+          <option value="">Todas as categorias</option>
+          <option value="Limpeza">Limpeza</option>
+          <option value="Aplicação de Flúor">Aplicação de Flúor</option>
+          <option value="Selantes">Selantes</option>
+          <option value="Profilaxia">Profilaxia</option>
+          <option value="Restauração">Restauração</option>
+          <option value="Coroa">Coroa</option>
+          <option value="Faceta">Faceta</option>
+          <option value="Inlay/Onlay">Inlay/Onlay</option>
+          <option value="Extração">Extração</option>
+          <option value="Implante">Implante</option>
+          <option value="Enxerto">Enxerto</option>
+          <option value="Cirurgia Periodontal">Cirurgia Periodontal</option>
+          <option value="Aparelho Fixo">Aparelho Fixo</option>
+          <option value="Alinhador">Alinhador</option>
+          <option value="Manutenção">Manutenção</option>
+          <option value="Contenção">Contenção</option>
+        </select>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white rounded-xl shadow-lg text-sm">
+          <thead class="bg-gray-100 text-left">
+            <tr>
+              <th class="px-6 py-3">Paciente</th>
+              <th class="px-6 py-3">Data</th>
+              <th class="px-6 py-3">Procedimento</th>
+              <th class="px-6 py-3">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Prontuários serão inseridos aqui via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <div id="viewModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white p-6 rounded-xl max-w-lg w-full">
+      <h2 class="text-2xl font-bold mb-4">Detalhes do Prontuário</h2>
+      <div id="modalContent"></div>
+      <button onclick="closeModal('viewModal')" class="mt-4 bg-gray-200 px-4 py-2 rounded-lg">Fechar</button>
+    </div>
+  </div>
+
+  <script>
+    const prontuarios = JSON.parse(localStorage.getItem('prontuarios')) || [];
+    const tbody = document.querySelector('tbody');
+
+    function renderProntuarios() {
+      tbody.innerHTML = '';
+      prontuarios.forEach((prontuario, index) => {
+        const tr = document.createElement('tr');
+        tr.classList.add('border-t', 'hover:bg-gray-50');
+        tr.innerHTML = `
+          <td class="px-6 py-4">${prontuario.paciente}</td>
+          <td class="px-6 py-4">${new Date(prontuario.dataConsulta).toLocaleDateString()}</td>
+          <td class="px-6 py-4">${prontuario.observacoes || 'N/A'}</td>
+          <td class="px-6 py-4 space-x-2">
+            <button onclick="verProntuario(${index})" class="text-blue-600 hover:underline">Ver</button>
+            <button onclick="editarProntuario(${index})" class="text-green-600 hover:underline">Editar</button>
+            <button onclick="excluirProntuario(${index})" class="text-red-600 hover:underline">Excluir</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function verProntuario(index) {
+      const prontuario = prontuarios[index];
+      const modalContent = document.getElementById('modalContent');
+      modalContent.innerHTML = `
+        <p><strong>Paciente:</strong> ${prontuario.paciente}</p>
+        <p><strong>Data:</strong> ${new Date(prontuario.dataConsulta).toLocaleDateString()}</p>
+        <p><strong>Observações:</strong> ${prontuario.observacoes || 'N/A'}</p>
+        ${prontuario.arquivos ? `
+          <div class="mt-4">
+            <h3 class="font-bold">Arquivos Anexados:</h3>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+              ${prontuario.arquivos.map(arquivo => `
+                <img src="${arquivo.dados}" alt="Anexo" class="w-full h-32 object-cover rounded">
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+      `;
+      document.getElementById('viewModal').classList.remove('hidden');
+      document.getElementById('viewModal').classList.add('flex');
+    }
+
+    function editarProntuario(index) {
+      if (isEditLocked(index)) {
+        alert('Este prontuário já foi editado este mês. Nova edição disponível em: ' + 
+              getNextEditDate(index));
+        return;
+      }
+
+      const prontuario = prontuarios[index];
+      // ... rest of the edit function code ...
+    }
+
+    function isEditLocked(index) {
+      const prontuario = prontuarios[index];
+      const lastEdit = new Date(prontuario.lastEdit || 0);
+      const now = new Date();
+      return lastEdit.getMonth() === now.getMonth() && 
+             lastEdit.getFullYear() === now.getFullYear();
+    }
+
+    function getNextEditDate(index) {
+      const prontuario = prontuarios[index];
+      const lastEdit = new Date(prontuario.lastEdit || 0);
+      const nextEdit = new Date(lastEdit.getFullYear(), lastEdit.getMonth() + 1, 1);
+      return nextEdit.toLocaleDateString();
+    }
+
+    function excluirProntuario(index) {
+      if (confirm('Tem certeza que deseja excluir este prontuário?')) {
+        prontuarios.splice(index, 1);
+        localStorage.setItem('prontuarios', JSON.stringify(prontuarios));
+        renderProntuarios();
+      }
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+      document.getElementById(modalId).classList.remove('flex');
+    }
+
+    renderProntuarios();
+  </script>
+
+</body>
+</html>

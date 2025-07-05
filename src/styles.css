@@ -1,0 +1,341 @@
+/* Normalização e reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  --primary-color: #0077b6;
+  --primary-dark: #005f8d;
+  --primary-light: #90e0ef;
+  --secondary-color: #90e0ef;
+  --background-light: #f8f9fa;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: var(--background-light);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  height: 100vh;
+  padding: 24px;
+  color: white;
+  position: fixed;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar .logo {
+  text-align: center;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar .logo-img {
+  width: 50px;
+  height: auto;
+  margin-top: 10px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  display: block;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.nav-link.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  font-weight: bold;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  gap: 12px;
+  font-size: 16px;
+}
+
+.sidebar ul li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Status badges */
+.status-badge {
+  display: inline-block;
+  font-weight: 500;
+}
+
+.status-badge.concluido {
+  background-color: #10B981;
+  color: white;
+}
+
+.status-badge.em-andamento {
+  background-color: #F59E0B;
+  color: white;
+}
+
+.status-badge.agendado {
+  background-color: #3B82F6;
+  color: white;
+}
+
+/* Conteúdo Principal */
+.main-content {
+  margin-left: 200px;
+  padding: 2rem;
+  min-height: 100vh;
+  width: calc(100% - 200px);
+  background-color: var(--background-light);
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Cards no Dashboard */
+.dashboard-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: white;
+  background: linear-gradient(145deg, #ffffff, #f5f5f5);
+  padding: 20px;
+  border-radius: 8px;
+  width: calc(33.333% - 20px);
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Ensure content doesn't overflow */
+* {
+  box-sizing: border-box;
+}
+
+.card a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.card a:hover {
+  text-decoration: underline;
+}
+
+/* Formulário de Login */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--background-light);
+}
+
+.login-box {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
+  width: 300px;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: var(--primary-dark);
+}
+
+.register-link {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.register-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+/* Seção de Teste Grátis */
+.teste-gratis-section {
+  background-color: var(--background-light);
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.teste-gratis-section .container {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
+  max-width: 600px;
+  width: 100%;
+}
+
+.teste-gratis-section .titulo-teste {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.teste-gratis-section .descricao-teste {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.teste-gratis-section .form-teste label {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
+.teste-gratis-section .form-teste input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.teste-gratis-section .form-teste input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.teste-gratis-section .botao-teste {
+  padding: 15px;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.teste-gratis-section .botao-teste:hover {
+  background-color: var(--primary-dark);
+  transform: scale(1.05);
+}
+
+/* Estilo para a seção de introdução */
+#introducao {
+  background-color: var(--background-light);
+  padding: 60px 20px;
+}
+
+#introducao h1 {
+  color: var(--primary-color);
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+#introducao p {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+#introducao .btn-animate {
+  padding: 15px 30px;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
+}
+
+#introducao .btn-animate:hover {
+  background-color: var(--primary-dark);
+  transform: scale(1.05);
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+}

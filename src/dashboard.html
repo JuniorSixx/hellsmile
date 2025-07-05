@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Hellsmile</title>
+    <link rel="stylesheet" href="output.css">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+      // Proteção de acesso: só entra quem tiver token salvo (após login)
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = "login.html";
+      }
+    </script>
+</head>
+<body>
+    <div class="flex min-h-screen">
+        <aside class="sidebar">
+            <nav class="flex flex-col space-y-4">
+                <a href="dashboard.html" class="nav-link">
+                    🏠 Dashboard
+                </a>
+                <a href="pacientes.html" class="nav-link">
+                    👥 Pacientes
+                </a>
+                <a href="agenda.html" class="nav-link">
+                    📅 Agenda
+                </a>
+                <a href="prontuarios.html" class="nav-link">
+                    📄 Prontuários
+                </a>
+                <a href="odontograma.html" class="nav-link">
+                    🦷 Odontograma
+                </a>
+                <a href="financeiro.html" class="nav-link">
+                    💰 Financeiro
+                </a>
+                <a href="configuracoes.html" class="nav-link">
+                    ⚙️ Configurações
+                </a>
+                <div class="h-4"></div>
+                <a href="index.html" class="nav-link">
+                    🚪 Sair
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <h1 class="text-3xl font-bold mb-6">Bem-vindo ao Hellsmile!</h1>
+            <div class="dashboard-cards">
+                <div class="card hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-bold mb-4">Pacientes</h3>
+                    <p class="mb-4">Gerencie os dados dos pacientes da clínica.</p>
+                    <a href="pacientes.html" class="text-primary-color hover:underline">Ver mais →</a>
+                </div>
+                <div class="card hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-bold mb-4">Agenda</h3>
+                    <p class="mb-4">Visualize consultas e agendamentos.</p>
+                    <a href="agenda.html" class="text-primary-color hover:underline">Ver mais →</a>
+                </div>
+                <div class="card hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-bold mb-4">Prontuários</h3>
+                    <p class="mb-4">Consulte os prontuários dos pacientes.</p>
+                    <a href="prontuarios.html" class="text-primary-color hover:underline">Ver mais →</a>
+                </div>
+                <div class="card hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-bold mb-4">Odontograma</h3>
+                    <p class="mb-4">Visualize e atualize o odontograma dos pacientes.</p>
+                    <a href="odontograma.html" class="text-primary-color hover:underline">Ver mais →</a>
+                </div>
+                <div class="card hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-bold mb-4">Financeiro</h3>
+                    <p class="mb-4">Gerencie as finanças da clínica.</p>
+                    <a href="financeiro.html" class="text-primary-color hover:underline">Ver more →</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

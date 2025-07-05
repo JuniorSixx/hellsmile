@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recuperar Senha - HellSmile</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <style>
+    .recovery-box {
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen">
+  <div class="recovery-box animate__animated animate__fadeIn">
+    <h1 class="text-2xl font-bold text-primary mb-6">Recuperar Senha</h1>
+    <p class="text-gray-600 mb-6">Digite seu email para receber as instruções de recuperação de senha.</p>
+    
+    <form id="recoveryForm" onsubmit="handleRecovery(event)" class="space-y-4">
+      <input 
+        type="email" 
+        name="email" 
+        placeholder="Seu email" 
+        required 
+        class="w-full p-3 border border-gray-300 rounded-lg"
+      />
+      
+      <button 
+        type="submit" 
+        class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors"
+      >
+        Recuperar Senha
+      </button>
+    </form>
+    
+    <div id="message" class="mt-4 text-sm hidden"></div>
+    
+    <a href="login.html" class="block mt-6 text-blue-600 hover:underline">
+      Voltar para o login
+    </a>
+  </div>
+
+  <script>
+    function handleRecovery(event) {
+      event.preventDefault();
+      const email = event.target.email.value;
+      const messageDiv = document.getElementById('message');
+      
+      // Simulating API call for password recovery
+      messageDiv.textContent = 'Email de recuperação enviado! Verifique sua caixa de entrada.';
+      messageDiv.classList.remove('hidden');
+      messageDiv.classList.add('text-green-600');
+      
+      // In a real application, this would make an API call to trigger password reset
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

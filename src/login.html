@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - HellSmile</title>
+  <link href="output.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <style>
+    .login-box {
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .login-btn {
+      background-color: #0070ba;
+      color: white;
+      font-weight: bold;
+      padding: 12px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      width: 100%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .login-btn:hover {
+      background-color: #005f8d;
+    }
+
+    .login-link {
+      text-decoration: none;
+      color: #0070ba;
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+    }
+
+    .login-link:hover {
+      text-decoration: underline;
+    }
+
+    .login-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #0070ba;
+      margin-bottom: 30px;
+    }
+
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f9f9f9;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+      background: white;
+    }
+
+    .form-input:focus {
+      border-color: #0070ba;
+      box-shadow: 0 0 0 2px rgba(0,112,186,0.2);
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+      animation: slideUp 0.5s ease forwards;
+    }
+
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 opacity-75"></div>
+    <div class="login-box animate__animated animate__fadeIn">
+      <img src="https://i.imgur.com/LQWn3Z2.png" alt="HellSmile Logo" class="h-16 mx-auto mb-6">
+      <h1 class="login-title text-3xl font-bold text-primary mb-8">Bem-vindo</h1>
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="input-group">
+          <input type="email" name="email" placeholder="Email" required class="form-input" />
+          <div id="loginMessage" class="text-red-500 text-sm hidden"></div>
+        </div>
+        <div class="input-group">
+          <input type="password" name="password" placeholder="Senha" required class="form-input" />
+          <a href="recuperar-senha.html" class="block text-sm text-blue-600 hover:underline mt-2">Esqueci minha senha</a>
+        </div>
+        <button type="submit" class="login-btn">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    async function handleLogin(event) {
+      event.preventDefault();
+
+      const email = event.target.email.value.trim();
+      const password = event.target.password.value.trim();
+      const messageDiv = document.getElementById('loginMessage');
+
+      try {
+        const res = await fetch('http://localhost:3000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          localStorage.setItem('token', data.token);
+          window.location.href = 'dashboard.html';
+        } else {
+          messageDiv.textContent = data.message || 'Credenciais inválidas';
+          messageDiv.classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error('Erro ao conectar com o servidor:', error);
+        messageDiv.textContent = 'Erro de conexão com o servidor';
+        messageDiv.classList.remove('hidden');
+      }
+    }
+  </script>
+</body>
+</html>

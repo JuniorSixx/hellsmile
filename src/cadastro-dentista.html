@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro Dentista - HellSmile</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <style>
+    .form-box {
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .form-box input {
+      margin-bottom: 15px;
+      padding: 12px;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+    }
+
+    .form-btn {
+      background-color: #0070ba;
+      color: white;
+      font-weight: bold;
+      padding: 12px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      width: 100%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .form-btn:hover {
+      background-color: #005f8d;
+    }
+
+    .form-link {
+      text-decoration: none;
+      color: #0070ba;
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+    }
+
+    .form-link:hover {
+      text-decoration: underline;
+    }
+
+    .form-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #0070ba;
+      margin-bottom: 30px;
+    }
+
+    .form-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <div class="form-box animate__animated animate__fadeIn">
+      <h1 class="form-title">Cadastro Dentista</h1>
+      <form action="/api/cadastro-dentista" method="POST">
+        <input type="text" name="name" placeholder="Nome Completo" required class="form-input" />
+        <input type="email" name="email" placeholder="Email" required class="form-input" />
+        <input type="password" name="password" placeholder="Senha" required class="form-input" />
+        <button type="submit" class="form-btn">Cadastrar</button>
+      </form>
+      <a href="login.html" class="form-link">Já tem uma conta? Faça login</a>
+    </div>
+  </div>
+
+</body>
+</html>
